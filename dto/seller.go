@@ -15,6 +15,7 @@ type SellerRegisterReq struct {
 
 type SellerRegisterRes struct {
 	InsertId primitive.ObjectID `json:"insert_id"`
+	Message  []string           `json:"message"`
 }
 
 type SellerAuthReq struct {
