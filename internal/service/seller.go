@@ -80,13 +80,9 @@ func (s *sellerService) RegisterSeller(ctx context.Context, req *dto.SellerRegis
 		Seller_Id:     sellerId,
 	}
 
-	insertResult, err := s.repo.CreateSeller(ctx, seller)
-	if err != nil {
-		return nil, err
-	}
+	var msg []string
 
 	otpCode := util.GenarateRandomNumber(4)
-
 	err = s.emailSvc.SendMail(req.Email, "OTP Code", "otp anda "+otpCode)
 	if err != nil {
 		return nil, errors.New("failed to send email: " + err.Error())
@@ -102,8 +98,17 @@ func (s *sellerService) RegisterSeller(ctx context.Context, req *dto.SellerRegis
 		return nil, errors.New("failed to add seller email to redis :" + err.Error())
 	}
 
+	insertResult, err := s.repo.CreateSeller(ctx, seller)
+	if err != nil {
+		return nil, err
+	}
+
+	msg = append(msg, "OTP Has been send on Your email")
+	msg = append(msg, "Seller created successfully!")
+
 	return &dto.SellerRegisterRes{
 		InsertId: insertResult,
+		Message:  msg,
 	}, nil
 }
 
@@ -120,7 +125,7 @@ func (s *sellerService) AuthenticateSeller(ctx context.Context, req *dto.SellerA
 
 	seller, err := s.repo.FindSellerByEmail(ctx, req.Email)
 	if err != nil {
-		return nil, errors.New("email or password incorrect")
+		return nil, errors.New("email doesn't exist")
 	}
 
 	passwordIsInvalid, _ := util.VerifyPassword(req.Password, seller.Password)
