@@ -6,11 +6,11 @@ import (
 )
 
 type SellerRegisterReq struct {
-	First_Name string `json:"first_name" valid:"required,min=2,max=100"`
-	Last_Name  string `json:"last_name" valid:"required,min=2,max=100"`
+	First_Name string `json:"first_name" valid:"required,minstringlength(2),maxstringlength(100)"`
+	Last_Name  string `json:"last_name" valid:"required,minstringlength(2),maxstringlength(100)"`
 	Email      string `json:"email" valid:"email,required"`
-	Password   string `json:"password" valid:"required,min=8"`
-	Phone      string `json:"phone" valid:"required"`
+	Password   string `json:"password" valid:"required,minstringlength(8)"`
+	Phone      string `json:"phone" valid:"required,minstringlength(11)"`
 }
 
 type SellerRegisterRes struct {
@@ -19,7 +19,7 @@ type SellerRegisterRes struct {
 
 type SellerAuthReq struct {
 	Email    string `json:"email" valid:"email,required"`
-	Password string `json:"password" valid:"required,min=8"`
+	Password string `json:"password" valid:"required,minstringlength(8)"`
 }
 
 type SellerAuthRes struct {
