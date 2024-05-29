@@ -35,7 +35,7 @@ func (sh *SellerHandler) RegisterSeller() gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Seller created successfully!", "insertId": res})
+		ctx.JSON(http.StatusCreated, gin.H{"result": res})
 	}
 }
 
@@ -60,7 +60,7 @@ func (sh *SellerHandler) AuthenticateSeller() gin.HandlerFunc {
 			HttpOnly: true,
 		})
 
-		ctx.JSON(http.StatusCreated, gin.H{"access_token": res.Access_Token})
+		ctx.JSON(http.StatusOK, gin.H{"access_token": res.Access_Token})
 	}
 }
 
