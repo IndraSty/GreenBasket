@@ -23,7 +23,6 @@ type Seller struct {
 	Created_At      time.Time          `json:"created_at"`
 	Updated_At      time.Time          `json:"updated_at"`
 	EmailVerified   bool               `json:"email_verified"`
-	PhoneVerified   bool               `json:"phone_verified"`
 	Seller_Id       string             `json:"seller_id"`
 	Store_Id        string             `json:"store_id" bson:"store_id"`
 	Address_Details *Address           `json:"address" bson:"address"`

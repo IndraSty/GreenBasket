@@ -24,7 +24,6 @@ type User struct {
 	Updated_At      time.Time          `json:"updated_at" bson:"updated_at"`
 	User_Id         string             `json:"user_id" bson:"user_id"`
 	EmailVerified   bool               `json:"email_verified" bson:"email_verified"`
-	PhoneVerified   bool               `json:"phone_verified" bson:"phone_verified"`
 	Oauth_Id        string             `json:"oauth_id"`
 	Address_Details *Address           `json:"address" bson:"address"`
 }
