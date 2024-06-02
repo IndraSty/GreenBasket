@@ -56,7 +56,6 @@ func (suite *UserRepositoryTestSuite) TestCreateUserSuccess() {
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: false,
-		PhoneVerified: false,
 		User_Id:       userId,
 	}
 
@@ -81,7 +80,6 @@ func (suite *UserRepositoryTestSuite) TestFindUserByEmailSuccess() {
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: true,
-		PhoneVerified: true,
 		User_Id:       "uniqueuserid",
 	}
 	_, err := suite.repo.CreateUser(ctx, newUser)
@@ -121,7 +119,6 @@ func (suite *UserRepositoryTestSuite) TestUpdateUserSuccess() {
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: true,
-		PhoneVerified: true,
 		User_Id:       "uniqueuserid",
 	}
 	_, err := suite.repo.CreateUser(ctx, user)

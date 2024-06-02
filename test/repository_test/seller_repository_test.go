@@ -56,7 +56,6 @@ func (suite *SellerRepositoryTestSuite) TestCreateSellerSuccess() {
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: false,
-		PhoneVerified: false,
 		Seller_Id:     sellerId,
 	}
 
@@ -81,7 +80,6 @@ func (suite *SellerRepositoryTestSuite) TestFindSellerByEmailSuccess() {
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: true,
-		PhoneVerified: true,
 		Seller_Id:     "uniquesellerid",
 	}
 	_, err := suite.repo.CreateSeller(ctx, newSeller)
@@ -121,7 +119,6 @@ func (suite *SellerRepositoryTestSuite) TestUpdateSellerSuccess() {
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: true,
-		PhoneVerified: true,
 		Seller_Id:     "uniquesellerid",
 	}
 	_, err := suite.repo.CreateSeller(ctx, seller)
