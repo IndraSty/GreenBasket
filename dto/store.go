@@ -6,8 +6,8 @@ import (
 )
 
 type StoreReq struct {
-	Name        string `json:"name" valid:"required,min=2,max=100" bson:"name"`
-	Description string `json:"description" valid:"required" bson:"description"`
+	Name        string `json:"name" valid:"required,minstringlength(2),maxstringlength(100)" bson:"name"`
+	Description string `json:"description" valid:"required,minstringlength(2)" bson:"description"`
 	Logo        string `json:"logo" bson:"logo"`
 	Banner      string `json:"banner" bson:"banner"`
 }

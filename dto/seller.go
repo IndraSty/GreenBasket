@@ -39,8 +39,8 @@ type SellerUserResponse struct {
 }
 
 type SellerUpdateReq struct {
-	First_Name string `json:"first_name" valid:"required,min=2,max=100"`
-	Last_Name  string `json:"last_name" valid:"required,min=2,max=100"`
+	First_Name string `json:"first_name" valid:"required,minstringlength(2),maxstringlength(100)"`
+	Last_Name  string `json:"last_name" valid:"required,minstringlength(2),maxstringlength(100)"`
 	Image_Url  string `json:"image_url"`
 }
 
