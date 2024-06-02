@@ -29,8 +29,6 @@ func DBInstance(cnf *config.Config) *mongo.Client {
 	return client
 }
 
-// var Client *mongo.Client = DBInstance()
-
 func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	var Collection *mongo.Collection = client.Database("greenbasket").Collection(collectionName)
 
