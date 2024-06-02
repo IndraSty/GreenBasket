@@ -17,12 +17,11 @@ func main() {
 
 	config.NewAuthSetup(cnf).NewAuth()
 
-	app := gin.New()
-
 	config := cors.DefaultConfig()
 	// config.AllowOrigins = []string{"http://greenbasket.com"}
 	config.AllowAllOrigins = true
 
+	app := gin.New()
 	app.Use(cors.New(config))
 
 	bootstrap.Application(&bootstrap.ApplicationConfig{
