@@ -250,6 +250,10 @@ func (s *salesReportService) GetSalesReport(ctx context.Context, email string, s
 		return nil, errors.New("failed to get sales report: " + err.Error())
 	}
 
+	if result == nil {
+		return nil, errors.New("this seller has no store")
+	}
+
 	for _, item := range result.Products {
 		result := dto.ProductSalesRes{
 			Product_Id:  item.Product_Id,

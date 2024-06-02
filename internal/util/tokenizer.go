@@ -30,7 +30,7 @@ func (ts *tokenService) GenerateAllTokens(email string, firstname string, lastna
 		Last_Name:  lastname,
 		Uid:        uid,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Local().Add(time.Minute * time.Duration(30)).Unix(),
+			ExpiresAt: time.Now().Local().Add(time.Minute * time.Duration(5)).Unix(),
 		},
 	}
 

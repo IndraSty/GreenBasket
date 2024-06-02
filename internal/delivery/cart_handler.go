@@ -36,7 +36,7 @@ func (h *CartHandler) AddToCart() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var req dto.AddCartReq
 		email := ctx.MustGet("email").(string)
-		productID := ctx.Query("id")
+		productID := ctx.Query("product_id")
 
 		if err := ctx.BindJSON(&req); err != nil {
 			util.HandleError(ctx, err, http.StatusBadRequest, err.Error())
@@ -71,7 +71,7 @@ func (h *CartHandler) UpdateItemInCart() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var req dto.CartItemEditReq
 		email := ctx.MustGet("email").(string)
-		productID := ctx.Query("id")
+		productID := ctx.Query("product_id")
 
 		if err := ctx.BindJSON(&req); err != nil {
 			util.HandleError(ctx, err, http.StatusBadRequest, err.Error())
@@ -91,7 +91,7 @@ func (h *CartHandler) UpdateItemInCart() gin.HandlerFunc {
 func (h *CartHandler) RemoveItemInCart() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		email := ctx.MustGet("email").(string)
-		productID := ctx.Query("id")
+		productID := ctx.Query("product_id")
 
 		err := h.service.RemoveCartItemById(ctx, email, productID)
 		if err != nil {

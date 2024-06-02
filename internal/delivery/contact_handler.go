@@ -29,12 +29,12 @@ func (h *ContactHandler) AddStoreContact() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.AddStoreContact(ctx, email, storeID, req)
+		_, err := h.service.AddStoreContact(ctx, email, storeID, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
-		ctx.JSON(http.StatusOK, gin.H{"message": "Store Contact successfully added", "result": res})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Store Contact successfully added"})
 	}
 }
 
@@ -64,13 +64,13 @@ func (h *ContactHandler) EditStoreContact() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.UpdateStoreContact(ctx, email, storeID, req)
+		_, err := h.service.UpdateStoreContact(ctx, email, storeID, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"message": "Store Contact successfully updated", "result": res})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Store Contact successfully updated"})
 	}
 }
 
@@ -79,12 +79,12 @@ func (h *ContactHandler) DeleteStoreContact() gin.HandlerFunc {
 		email := ctx.MustGet("email").(string)
 		storeID := ctx.Param("store_id")
 
-		res, err := h.service.RemoveStoreContact(ctx, email, storeID)
+		_, err := h.service.RemoveStoreContact(ctx, email, storeID)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"message": "Store Contact successfully deleted", "result": res})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Store Contact successfully deleted"})
 	}
 }

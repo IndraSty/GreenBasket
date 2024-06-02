@@ -47,19 +47,20 @@ func (h *ProductHandler) UpdateProduct() gin.HandlerFunc {
 		var req dto.ProductReq
 		email := ctx.MustGet("email").(string)
 		storeID := ctx.Param("store_id")
+		productID := ctx.Query("product_id")
 
 		if err := ctx.BindJSON(&req); err != nil {
 			util.HandleError(ctx, err, http.StatusBadRequest, err.Error())
 			return
 		}
 
-		res, err := h.service.CreateProduct(ctx, email, storeID, &req)
+		_, err := h.service.UpdateProduct(ctx, storeID, email, productID, &req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"message": "Update Product successfully", "result": res})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Update Product successfully"})
 	}
 }
 
@@ -162,13 +163,13 @@ func (h *ProductHandler) DeleteProduct() gin.HandlerFunc {
 		storeID := ctx.Param("store_id")
 		productID := ctx.Query("id")
 
-		res, err := h.service.DeleteProductById(ctx, storeID, email, productID)
+		_, err := h.service.DeleteProductById(ctx, storeID, email, productID)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"message": "Product successfully deleted", "result": res})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Product successfully deleted"})
 	}
 }
 
@@ -206,7 +207,7 @@ func (h *ProductHandler) SearchProductForGuest() gin.HandlerFunc {
 
 func (h *ProductHandler) FetchAllProductByCategoryForGuest() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		category := ctx.Query("category")
+		category := ctx.Query("key")
 		pageStr := ctx.DefaultQuery("page", "1")
 		page, _ := strconv.Atoi(pageStr)
 

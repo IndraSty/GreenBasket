@@ -63,7 +63,7 @@ func (m *Middleware) SellerAuthMiddleware() gin.HandlerFunc {
 
 		claims, err := m.tokenSvc.ValidateToken(clientToken)
 		if err != "" {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err})
 			c.Abort()
 			return
 		}

@@ -76,7 +76,6 @@ func (s *sellerService) RegisterSeller(ctx context.Context, req *dto.SellerRegis
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: false,
-		PhoneVerified: false,
 		Seller_Id:     sellerId,
 	}
 

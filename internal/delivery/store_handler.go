@@ -47,13 +47,13 @@ func (h *StoreHandler) EditStore() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.UpdateStore(ctx, email, storeID, &req)
+		_, err := h.service.UpdateStore(ctx, email, storeID, &req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Update store data successfully", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Update store data successfully"})
 
 	}
 }
@@ -83,6 +83,10 @@ func (h *StoreHandler) SearchStore() gin.HandlerFunc {
 			return
 		}
 
+		if len(res) == 0 {
+			util.HandleError(ctx, nil, http.StatusNotFound, "no store was found")
+			return
+		}
 		ctx.JSON(http.StatusCreated, gin.H{"message": "Search store by Name successfully", "data": res})
 	}
 }
@@ -92,12 +96,12 @@ func (h *StoreHandler) DeleteStore() gin.HandlerFunc {
 		email := ctx.MustGet("email").(string)
 		storeID := ctx.Param("store_id")
 
-		res, err := h.service.DeleteStore(ctx, email, storeID)
+		_, err := h.service.DeleteStore(ctx, email, storeID)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Delete store successfully", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Delete store successfully"})
 	}
 }

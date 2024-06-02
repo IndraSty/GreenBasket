@@ -129,7 +129,7 @@ func (s *sellerOrderService) GetAllSellerOrders(ctx context.Context, email strin
 
 	_, err = s.sellerRepo.FindSellerByEmail(ctx, email)
 	if err != nil {
-		return nil, errors.New("failed to find user: " + err.Error())
+		return nil, errors.New("failed to find seller: " + err.Error())
 	}
 
 	result, err := s.repo.GetAllSellerOrders(ctx, email)
@@ -164,6 +164,10 @@ func (s *sellerOrderService) GetSellerOrderByEmailAndId(ctx context.Context, ema
 	result, err := s.repo.GetSellerOrderByEmailAndId(ctx, email, orderID)
 	if err != nil {
 		return nil, errors.New("failed to get the order: " + err.Error())
+	}
+
+	if result == nil {
+		return nil, errors.New("no order found")
 	}
 
 	err = s.setRedisSO(*result, "seller-order:", email)
@@ -269,7 +273,7 @@ func (s *sellerOrderService) CancelOrder(ctx context.Context, email string, orde
 	}
 
 	if res.ModifiedCount == 0 {
-		return errors.New("failed to delete item")
+		return errors.New("no item deleted")
 	}
 
 	for _, item := range order.Items {
@@ -280,7 +284,7 @@ func (s *sellerOrderService) CancelOrder(ctx context.Context, email string, orde
 			}
 
 			if res.ModifiedCount == 0 {
-				return errors.New("failed to delete item")
+				return errors.New("no item deleted")
 			}
 		}
 	}

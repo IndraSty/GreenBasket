@@ -115,11 +115,12 @@ func (h *AuthHandler) LogoutHandler(c *gin.Context) {
 	http.SetCookie(c.Writer, &http.Cookie{
 		Name:     "refresh_token",
 		Value:    "",
-		Path:     "/",
+		Path:     "/api/users",
 		Expires:  time.Unix(0, 0),
 		HttpOnly: true,
 	})
 	gothic.Logout(w, r)
+	c.JSON(http.StatusOK, gin.H{"message": "Ok"})
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 

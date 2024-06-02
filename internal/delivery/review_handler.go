@@ -31,13 +31,13 @@ func (h *ReviewHandler) AddReview() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.CreateReview(ctx, email, orderID, productID, &req)
+		_, err := h.service.CreateReview(ctx, email, orderID, productID, &req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"message": "Add Review Successfully", "result": res})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Add Review Successfully"})
 	}
 }
 

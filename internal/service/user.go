@@ -89,11 +89,11 @@ func (us *userService) RegisterUser(ctx context.Context, req *dto.UserRegisterRe
 		Created_At:    time.Now(),
 		Updated_At:    time.Now(),
 		EmailVerified: false,
-		PhoneVerified: false,
 		User_Id:       userId,
 	}
 
 	otpCode := util.GenarateRandomNumber(4)
+	var msg []string
 
 	err = us.emailSvc.SendMail(req.Email, "OTP Code", "otp anda "+otpCode)
 	if err != nil {
@@ -119,8 +119,12 @@ func (us *userService) RegisterUser(ctx context.Context, req *dto.UserRegisterRe
 		return nil, errors.New("failed to add user email to redis :" + err.Error())
 	}
 
+	msg = append(msg, "OTP Has been send on Your email")
+	msg = append(msg, "Seller created successfully!")
+
 	return &dto.UserRegisterRes{
 		InsertId: insertResult,
+		Message:  msg,
 	}, nil
 }
 

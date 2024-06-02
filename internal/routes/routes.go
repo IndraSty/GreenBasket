@@ -46,7 +46,7 @@ func (c *RouteConfig) SetupGuestRoute() {
 	// google login
 	c.App.GET("/api/auth/:provider", c.AuthHandler.BeginAuthHandler)
 	c.App.GET("/api/auth/callback/:provider", c.AuthHandler.GetAuthCallBackFunc)
-	c.App.GET("/api/auth/logout", c.AuthHandler.LogoutHandler)
+	c.App.DELETE("/api/auth/logout", c.AuthHandler.LogoutHandler)
 
 	// seller route
 	c.App.POST("/api/sellers/signup", c.SellerHandler.RegisterSeller())
@@ -71,7 +71,8 @@ func (c *RouteConfig) SetupSellerAuthRoute() {
 	{
 		sellerRoutes.Use(c.Middlewares.SellerAuthMiddleware())
 		sellerRoutes.GET("/current", c.SellerHandler.GetSellerHandler())
-		sellerRoutes.PUT("/current", c.SellerHandler.UpdateSellerHandler())
+		sellerRoutes.PATCH("/current", c.SellerHandler.UpdateSellerHandler())
+		sellerRoutes.DELETE("/current", c.SellerHandler.LogoutSellerHandler())
 
 		// seller address
 		sellerRoutes.POST("/current/addresses", c.AddressHandler.AddSellerAddress())
@@ -108,13 +109,13 @@ func (c *RouteConfig) SetupSellerAuthRoute() {
 		sellerRoutes.DELETE("/current/stores/:store_id/product", c.ProductHandler.DeleteProduct())
 
 		// seller order
-		sellerRoutes.GET("/current/order/:order_id", c.SellerOrderHandler.DetailSellerOrder())
+		sellerRoutes.GET("/current/orders/:order_id", c.SellerOrderHandler.DetailSellerOrder())
 		sellerRoutes.GET("/current/orders", c.SellerOrderHandler.GetAllSellerOrders())
-		sellerRoutes.PATCH("/current/order/:order_id", c.SellerOrderHandler.UpdateStatusOrder())
-		sellerRoutes.DELETE("/current/order/:order_id", c.SellerOrderHandler.CancelOrder())
+		sellerRoutes.PATCH("/current/orders/:order_id", c.SellerOrderHandler.UpdateStatusOrder())
+		sellerRoutes.DELETE("/current/orders/:order_id", c.SellerOrderHandler.CancelOrder())
 
 		// seller review
-		sellerRoutes.GET("/current/product/reviews", c.ReviewHandler.GetAllReviewByProductId())
+		sellerRoutes.GET("/current/reviews/product", c.ReviewHandler.GetAllReviewByProductId())
 		sellerRoutes.GET("/current/reviews", c.ReviewHandler.GetAllReviewBySellerEmail())
 		sellerRoutes.PATCH("/current/reviews/:review_id", c.ReviewHandler.UpdateResponSeller())
 
@@ -129,8 +130,9 @@ func (c *RouteConfig) SetupUserAuthRoute() {
 	{
 		userRoutes.Use(c.Middlewares.UserAuthMiddleware())
 		userRoutes.GET("/current", c.UserHandler.GetUserHandler())
-		userRoutes.PUT("/current", c.UserHandler.UpdateUserHandler())
-		userRoutes.PUT("/current/phone", c.UserHandler.AddPhoneNumber())
+		userRoutes.PATCH("/current", c.UserHandler.UpdateUserHandler())
+		userRoutes.PATCH("/current/add-phone", c.UserHandler.AddPhoneNumber())
+		userRoutes.DELETE("/current/logout", c.AuthHandler.LogoutHandler)
 
 		// user address
 		userRoutes.POST("/current/addresses", c.AddressHandler.AddUserAddress())
@@ -141,9 +143,16 @@ func (c *RouteConfig) SetupUserAuthRoute() {
 		// user cart
 		userRoutes.POST("/current/cart", c.CartHandler.AddToCart())
 		userRoutes.GET("/current/cart", c.CartHandler.GetCart())
-		userRoutes.PUT("/current/cartitem", c.CartHandler.UpdateItemInCart())
-		userRoutes.DELETE("/current/cartitem", c.CartHandler.RemoveItemInCart())
-		userRoutes.GET("/current/cartitems", c.CartHandler.GetAllItemCart())
+		userRoutes.PATCH("/current/cart-item", c.CartHandler.UpdateItemInCart())
+		userRoutes.DELETE("/current/cart-item", c.CartHandler.RemoveItemInCart())
+		userRoutes.GET("/current/cart-items", c.CartHandler.GetAllItemCart())
+
+		// user product
+		c.App.GET("/current/products", c.ProductHandler.FetchAllProductForGuest())
+		c.App.GET("/current/products/search", c.ProductHandler.SearchProductForGuest())
+		c.App.GET("/current/products/:product_id", c.ProductHandler.FetchProductForGuest())
+		c.App.GET("/current/products/category", c.ProductHandler.FetchAllProductByCategoryForGuest())
+		c.App.GET("/current/products/sort", c.ProductHandler.SortProductForGuest())
 
 		// user order
 		userRoutes.POST("/current/order", c.OrderHandler.CreateOrder())

@@ -48,7 +48,7 @@ func (uh *UserHandler) GetUserHandler() gin.HandlerFunc {
 			util.HandleError(ctx, err, http.StatusInternalServerError, msg)
 			return
 		}
-		ctx.JSON(http.StatusOK, gin.H{"data": user})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Get User successfully!", "data": user})
 	}
 }
 
@@ -61,13 +61,13 @@ func (uh *UserHandler) UpdateUserHandler() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		result, err := uh.userSvc.UpdateUser(ctx, email, &userInput)
+		_, err := uh.userSvc.UpdateUser(ctx, email, &userInput)
 		if err != nil {
 			msg := "Error updating user" + err.Error()
 			util.HandleError(ctx, err, http.StatusInternalServerError, msg)
 			return
 		}
-		ctx.JSON(http.StatusOK, gin.H{"message": "Update User Successfully", "result": result})
+		ctx.JSON(http.StatusOK, gin.H{"message": "Update User Successfully"})
 	}
 }
 

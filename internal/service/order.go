@@ -363,7 +363,7 @@ func (s *orderService) FinishOrder(ctx context.Context, email string, orderID st
 	}
 
 	if req.Status != "FINISHED" {
-		return errors.New("order status is not 'FINISHED'")
+		return errors.New("order status request is not 'FINISHED'")
 	}
 
 	res, err := s.repo.UpdateStatusOrder(ctx, orderID, productID, req)

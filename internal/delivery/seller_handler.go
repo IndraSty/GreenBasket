@@ -82,16 +82,36 @@ func (uh *SellerHandler) UpdateSellerHandler() gin.HandlerFunc {
 		email := ctx.MustGet("email").(string)
 		var sellerInput dto.SellerUpdateReq
 		if err := ctx.BindJSON(&sellerInput); err != nil {
-			log.Println("Error Input req seller:", err.Error())
+			log.Println("Error Input req seller: ", err.Error())
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		result, err := uh.service.UpdateSeller(ctx, email, &sellerInput)
 		if err != nil {
-			msg := "Error updating seller" + err.Error()
+			msg := "Error updating seller: " + err.Error()
 			util.HandleError(ctx, err, http.StatusInternalServerError, msg)
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{"message": "Update seller Successfully", "result": result})
+	}
+}
+
+func (h *SellerHandler) LogoutSellerHandler() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		email := ctx.MustGet("email").(string)
+		if email == "" {
+			msg := "Mising Email"
+			util.HandleError(ctx, nil, http.StatusUnauthorized, msg)
+			return
+		}
+		http.SetCookie(ctx.Writer, &http.Cookie{
+			Name:     "refresh_token",
+			Value:    "",
+			Path:     "/api/sellers",
+			Expires:  time.Unix(0, 0),
+			HttpOnly: true,
+		})
+
+		ctx.JSON(http.StatusOK, gin.H{"message": "Ok"})
 	}
 }

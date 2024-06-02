@@ -514,7 +514,7 @@ func (s *productService) GetAllByCategoryForGuest(ctx context.Context, category 
 func (s *productService) GetProductByIdForGuest(ctx context.Context, productID string) (*dto.GetProductRes, error) {
 	product, err := s.repo.GetProductById(ctx, productID)
 	if err != nil {
-		return nil, errors.New("failed to get all products: " + err.Error())
+		return nil, errors.New("failed to get product by id: " + err.Error())
 	}
 
 	store, err := s.storeRepo.GetStore(ctx, product.Store_id)

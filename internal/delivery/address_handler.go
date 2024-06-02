@@ -29,13 +29,13 @@ func (h *AddressHandler) AddUserAddress() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.AddUserAddress(ctx, email, req)
+		_, err := h.service.AddUserAddress(ctx, email, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully add user address", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully add user address"})
 	}
 }
 
@@ -63,13 +63,13 @@ func (h *AddressHandler) UpdateUserAddress() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.UpdateUserAddress(ctx, email, req)
+		_, err := h.service.UpdateUserAddress(ctx, email, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully update user address", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully update user address"})
 	}
 }
 
@@ -98,13 +98,13 @@ func (h *AddressHandler) AddSellerAddress() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.AddSellerAddress(ctx, email, req)
+		_, err := h.service.AddSellerAddress(ctx, email, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully add seller address", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully add seller address"})
 	}
 }
 
@@ -132,13 +132,13 @@ func (h *AddressHandler) UpdateSellerAddress() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.UpdateSellerAddress(ctx, email, req)
+		_, err := h.service.UpdateSellerAddress(ctx, email, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully update seller address", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully update seller address"})
 	}
 }
 
@@ -168,13 +168,13 @@ func (h *AddressHandler) AddStoreAddress() gin.HandlerFunc {
 			return
 		}
 
-		res, err := h.service.AddStoreAddress(ctx, email, storeID, req)
+		_, err := h.service.AddStoreAddress(ctx, email, storeID, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully add store address", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully add store address"})
 	}
 }
 
@@ -199,13 +199,13 @@ func (h *AddressHandler) EditStoreAddress() gin.HandlerFunc {
 		email := ctx.MustGet("email").(string)
 		storeID := ctx.Param("store_id")
 
-		res, err := h.service.UpdateStoreAddress(ctx, email, storeID, req)
+		_, err := h.service.UpdateStoreAddress(ctx, email, storeID, req)
 		if err != nil {
 			util.HandleError(ctx, err, http.StatusInternalServerError, err.Error())
 			return
 		}
 
-		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully update store address", "result": res})
+		ctx.JSON(http.StatusCreated, gin.H{"message": "Successfully update store address"})
 	}
 }
 
