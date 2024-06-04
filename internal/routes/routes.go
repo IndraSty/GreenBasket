@@ -1,6 +1,11 @@
 package routes
 
 import (
+	"fmt"
+	"net/http"
+	"os"
+	"runtime"
+
 	"github.com/IndraSty/GreenBasket/internal/delivery"
 	"github.com/IndraSty/GreenBasket/internal/middlewares"
 	"github.com/IndraSty/GreenBasket/internal/sse"
@@ -37,7 +42,7 @@ func (c *RouteConfig) Setup() {
 
 func (c *RouteConfig) SetupGuestRoute() {
 	// user route
-
+	c.App.GET("/", index)
 	c.App.POST("/api/users/signup", c.UserHandler.RegisterUser())
 	c.App.POST("/api/users/login", c.AuthHandler.AuthenticateUser())
 	c.App.POST("/api/users/otp", c.AuthHandler.ValidateOTP())
@@ -175,4 +180,27 @@ func (c *RouteConfig) SetupUserAuthRoute() {
 
 	// sse notification user
 	c.App.GET("/sse/notification-stream", c.NotificationSSE.StreamNotification())
+}
+
+func index(c *gin.Context) {
+	operatingSystem := runtime.GOOS
+	switch operatingSystem {
+	case "windows":
+		fmt.Println("Windows")
+	case "darwin":
+		fmt.Println("MAC operating system")
+	case "linux":
+		fmt.Println("Linux")
+	default:
+		fmt.Printf("%s.\n", operatingSystem)
+	}
+	hostname, _ := os.Hostname()
+	jsonData := map[string]string{
+		"title":            "GreenBasket API",
+		"message":          "E-commerce backend service",
+		"hostname":         hostname,
+		"Operating System": operatingSystem,
+	}
+
+	c.JSON(http.StatusOK, jsonData)
 }
