@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "6619e6deb1ed2f405faa4292"
+  },
+  "code": "USER_ORDER",
+  "title": "Create an Order",
+  "body": "Successfully create an order with order id {{ .order_id }}"
+},
+{
+  "_id": {
+    "$oid": "6619e76db1ed2f405faa4293"
+  },
+  "code": "SELLER_ORDER",
+  "title": "Someone has Ordered",
+  "body": "Someone Ordered Your Product with order id {{ .order_id }}"
+},
+{
+  "_id": {
+    "$oid": "66247cf181e6b90eec9ecb62"
+  },
+  "code": "SELLER_FINISH_ORDER",
+  "title": "Order Finished",
+  "body": "Your order has finished by {{ .username }} with order id {{ .order_id }} and product id {{ .product_id }}"
+},
+{
+  "_id": {
+    "$oid": "662497cc81e6b90eec9ecb63"
+  },
+  "code": "SELLER_LESS_STOCK",
+  "title": "Alert Stock Product",
+  "body": "Your product stock is less than 3, immediately add your product stock with product id {{ .product_id }}"
+},
+{
+  "_id": {
+    "$oid": "66259ab06e5ccc5b831fdfa3"
+  },
+  "code": "USER_PRODUCT_SHIPPED",
+  "title": "Your Product Has Been Shipped",
+  "body": "Your Product {{ .product_id }} has been shipped by {{ .store_id }}"
+},
+{
+  "_id": {
+    "$oid": "6625d4d31d6a84d06a577bbb"
+  },
+  "code": "SELLER_PRODUCT_REVIEWED",
+  "title": "Someone Reviewed Your Product",
+  "body": "{{ .username }} has reviewed your product {{ .product_id }}"
+},
+{
+  "_id": {
+    "$oid": "662875104d2ea6ab04eed73e"
+  },
+  "code": "SELLER_RESPONSE_REVIEWED",
+  "title": "Seller has response Your review",
+  "body": "{{ .store_name }} has give response to your review in product {{ .product_id }}"
+}]
