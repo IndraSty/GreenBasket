@@ -1,0 +1,53 @@
+name: Deploy GreenBasket
+
+on:
+  push:
+    branches:
+      - deploy-to-ec2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name: Create .env file
+        run: |
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
+          echo "REDIS_ADDR=${{ secrets.REDIS_ADDR }}" >> .env
+          echo "REDIS_PASS=${{ secrets.REDIS_PASS }}" >> .env
+          echo "MIDTRANS_KEY=${{ secrets.MIDTRANS_KEY }}" >> .env
+          echo "MIDTRANS_ENV=${{ secrets.MIDTRANS_ENV }}" >> .env
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+          echo "SERVER_HOST=${{ secrets.SERVER_HOST }}" >> .env
+          echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+          echo "AUTH_SECRET_KEY=${{ secrets.AUTH_SECRET_KEY }}" >> .env
+          echo "AUTH_MAX_AGE=${{ secrets.AUTH_MAX_AGE }}" >> .env
+          echo "AUTH_IS_PROD=${{ secrets.AUTH_IS_PROD }}" >> .env
+          echo "GOOGLE_AUTH_CALLBACK_URL=${{ secrets.GOOGLE_AUTH_CALLBACK_URL }}" >> .env
+          echo "FACEBOOK_AUTH_CALLBACK_URL=${{ secrets.FACEBOOK_AUTH_CALLBACK_URL }}" >> .env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_SCOPE_EMAIL=${{ secrets.GOOGLE_SCOPE_EMAIL }}" >> .env
+          echo "GOOGLE_SCOPE_PROFILE=${{ secrets.GOOGLE_SCOPE_PROFILE }}" >> .env
+          echo "FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}" >> .env
+          echo "FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}" >> .env
+          echo "APP_PASSWORD=${{ secrets.APP_PASSWORD }}" >> .env
+          echo "MAIL_NAME=${{ secrets.MAIL_NAME }}" >> .env
+          echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
+      - name: Build docker image
+        run: docker build -t indraa/greenbasket .
+      - name: Push image to docker hub
+        run: docker push indraa/greenbasket:latest
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps: 
+      - name: Pull docker image
+        run: docker pull indraa/greenbasket:latest
+      - name: Delete old container
+        run: docker rm -f greenbasket-container
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 --name greenbasket-container indraa/greenbasket
